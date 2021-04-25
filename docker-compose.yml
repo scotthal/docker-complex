@@ -1,0 +1,15 @@
+version: "3"
+services:
+  postgres:
+    image: "postgres:10"
+    environment:
+      - POSTGRES_PASSWORD=postgres_password
+  redis:
+    image: "redis:4"
+  server:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./server
+    volumes:
+      - /home/app/node_modules
+      - ./server:/home/app
