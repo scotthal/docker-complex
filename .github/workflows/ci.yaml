@@ -25,6 +25,10 @@ jobs:
           version: "339.0.0"
           project_id: ${{ secrets.GKE_PROJECT }}
           service_account_key: ${{ secrets.GKE_SA_KEY }}
+      - name: Get Kubernetes Cluster Credentials
+        run:
+          gcloud container clusters get-credentials multi-cluster
+          --zone='us-west1-c'
       - name: Build Test Client
         run: |-
           docker build \
@@ -60,3 +64,9 @@ jobs:
           push: true
           tags:
             scotthal/multi-worker:latest,scotthal/multi-worker:${{ github.sha }}
+      - name: Update Kubernetes Cluster
+        run: |-
+          kubectl apply -f k8s
+          kubectl set image deployments/client-deployment client=scotthal/multi-client:$GITHUB_SHA
+          kubectl set image deployments/server-deployment server=scotthal/multi-server:$GITHUB_SHA
+          kubectl set image deployments/worker-deployment worker=scotthal/multi-worker:$GITHUB_SHA
