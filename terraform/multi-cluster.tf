@@ -19,7 +19,7 @@ resource "google_container_cluster" "multi-cluster" {
   initial_node_count = 3
   node_config {
     disk_size_gb = 10
-    image_type   = "COS_CONTAINERD"
+    image_type   = "cos_containerd"
     machine_type = "e2-small"
     preemptible  = true
   }
