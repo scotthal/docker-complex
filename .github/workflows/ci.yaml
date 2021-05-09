@@ -1,0 +1,27 @@
+name: Continuous Integration and Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-client:
+    name: Test Client Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build
+        run: |-
+          docker build \
+            -t scotthal/complex-client-test \
+            -f ./client/Dockerfile.dev \
+            ./client
+
+      - name: Test
+        run: |-
+          docker run \
+            -e CI=true \
+            scotthal/complex-client-test \
+            npm run test
