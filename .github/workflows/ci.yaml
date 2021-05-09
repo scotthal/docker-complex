@@ -22,7 +22,7 @@ jobs:
       - name: Build Test Client
         run: |-
           docker build \
-            -t scotthal/complex-client-test \
+            -t scotthal/multi-client-test \
             -f ./client/Dockerfile.dev \
             ./client
 
@@ -30,7 +30,7 @@ jobs:
         run: |-
           docker run \
             -e CI=true \
-            scotthal/complex-client-test \
+            scotthal/multi-client-test \
             npm run test
 
       - name: Build And Push Client
@@ -38,16 +38,16 @@ jobs:
         with:
           context: ./client
           push: true
-          tags: scotthal/complex-client:latest
+          tags: scotthal/multi-client:latest
       - name: Build And Push Server
         uses: docker/build-push-action@v2
         with:
           context: ./server
           push: true
-          tags: scotthal/complex-server:latest
-      = name: Build And Push Worker
+          tags: scotthal/multi-server:latest
+      - name: Build and Push Worker
         uses: docker/build-push-action@v2
         with:
           context: ./worker
           push: true
-          tags: scotthal/complex-worker:latest
+          tags: scotthal/multi-worker:latest
